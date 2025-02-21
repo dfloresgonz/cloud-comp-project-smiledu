@@ -1,0 +1,43 @@
+services:
+  apigateway:
+    build:
+      context: .
+      dockerfile: ./apps/api-gateway/Dockerfile
+      target: development
+    command: npm run start:dev
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3005:3005
+    depends_on:
+      - students
+      - courses
+  students:
+    build:
+      context: .
+      dockerfile: ./apps/students/Dockerfile
+      target: development
+    command: npm run start:dev students
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3006:3006
+  courses:
+    build:
+      context: .
+      dockerfile: ./apps/courses/Dockerfile
+      target: development
+    command: npm run start:dev courses
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3007:3007
