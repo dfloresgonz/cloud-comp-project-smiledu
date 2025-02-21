@@ -3,10 +3,14 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - master
+      - main
 env:
   DEPLOYMENT_ENV: production
-  MAIN_PORT: 3005
+  API_PORT: 3005
+  STUDENTS_MS_PORT: 3006
+  STUDENTS_SERVICE_NAME: students
+  COURSES_MS_PORT: 3007
+  COURSES_SERVICE_NAME: courses
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -18,8 +22,16 @@ jobs:
       - name: Create env Main
         id: CreateEnvMain
         run: |
-          touch apps/main/.env
-          echo PORT=${{env.MAIN_PORT}} >> .env
+          touch .env
+          echo API_PORT=${{env.API_PORT}} >> .env
+          echo HOST_BD=${{env.HOST_BD}} >> .env
+          echo USER_BD=${{env.USER_BD}} >> .env
+          echo BD_PASS=${{secrets.BD_PASS}} >> .env
+          echo BD_PORT=${{env.BD_PORT}} >> .env
+          echo STUDENTS_MS_PORT=${{env.STUDENTS_MS_PORT}} >> .env
+          echo STUDENTS_SERVICE_NAME=${{env.STUDENTS_SERVICE_NAME}} >> .env
+          echo COURSES_MS_PORT=${{env.COURSES_MS_PORT}} >> .env
+          echo COURSES_SERVICE_NAME=${{env.COURSES_SERVICE_NAME}} >> .env
 
       - name: Prepare files for archiving
         run: |
