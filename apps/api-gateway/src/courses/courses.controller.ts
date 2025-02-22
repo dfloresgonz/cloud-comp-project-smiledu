@@ -6,6 +6,7 @@ import {
   Inject,
   Param,
   Post,
+  Put,
 } from '@nestjs/common';
 import {
   ApiOperation,
@@ -83,6 +84,26 @@ export class CoursesController {
   ): Promise<FormattedAcademicoRecord> {
     return await lastValueFrom(
       this.coursesClient.send('pe.softhy.smiledu.notas.getByStudentId', id),
+    );
+  }
+
+  @ApiOperation({ summary: 'Update grade for a student in a course' })
+  @ApiParam({ name: 'courseId', type: Number })
+  @ApiParam({ name: 'studentId', type: Number })
+  @ApiBody({
+    schema: { type: 'object', properties: { newGrade: { type: 'number' } } },
+  })
+  @ApiResponse({ status: 200, description: 'Grade updated', type: Boolean })
+  @Put(':courseId/student/:studentId/grade')
+  async updateGrade(
+    @Param('courseId') courseId: number,
+    @Param('studentId') studentId: number,
+    @Body('newGrade') newGrade: number,
+  ): Promise<boolean> {
+    const payload = { courseId, studentId, newGrade };
+    console.log('updateGrade', payload);
+    return await lastValueFrom(
+      this.coursesClient.send('pe.softhy.smiledu.notas.updateGrade', payload),
     );
   }
 }

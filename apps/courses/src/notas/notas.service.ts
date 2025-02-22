@@ -4,6 +4,8 @@ import {
   DynamoDBDocumentClient,
   QueryCommand,
   QueryCommandInput,
+  UpdateCommand,
+  UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
 import { ConfigService } from '@nestjs/config';
 import { AcademicoRecord, FormattedAcademicoRecord } from 'apps/utils/types';
@@ -56,6 +58,40 @@ export class NotasService {
       throw new Error(`Failed to query DynamoDB: ${error.message}`);
     }
   }
+
+  async updateStudentGrade(
+    courseId: string,
+    studentId: string,
+    newGrade: string,
+  ): Promise<FormattedAcademicoRecord> {
+    const params: UpdateCommandInput = {
+      TableName: this.tableName,
+      Key: {
+        PK: 'NOTA',
+        SK: `COURSE#${courseId}STUDENT#${studentId}`,
+      },
+      UpdateExpression: 'SET #data.#nota = :grade',
+      ExpressionAttributeNames: {
+        '#data': 'data',
+        '#nota': 'Nota',
+      },
+      ExpressionAttributeValues: {
+        ':grade': newGrade,
+      },
+      ReturnValues: 'ALL_NEW',
+    };
+
+    try {
+      const command = new UpdateCommand(params);
+      const result = await this.ddbDocClient.send(command);
+      return this.formatResponse([result.Attributes as AcademicoRecord])[0];
+    } catch (error) {
+      throw new Error(
+        `Failed to update grade: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      );
+    }
+  }
+
   async getStudentGrades(
     studentId: string,
   ): Promise<FormattedAcademicoRecord[]> {

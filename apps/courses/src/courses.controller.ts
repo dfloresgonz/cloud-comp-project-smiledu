@@ -37,4 +37,13 @@ export class CoursesController {
   ): Promise<FormattedAcademicoRecord[]> {
     return this.notasService.getStudentGrades(id);
   }
+
+  @MessagePattern('pe.softhy.smiledu.notas.updateGrade')
+  async updateStudentGrade(
+    @Payload() payload: any,
+  ): Promise<FormattedAcademicoRecord> {
+    const { courseId, studentId, newGrade } = payload;
+    console.log('updateStudentGrade', courseId, studentId, newGrade);
+    return this.notasService.updateStudentGrade(courseId, studentId, newGrade);
+  }
 }
