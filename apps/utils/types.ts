@@ -26,3 +26,30 @@ export class Course {
   @ApiProperty()
   grado: number;
 }
+
+export interface AcademicoRecord {
+  PK: string;
+  SK: string;
+  data: {
+    Curso?: { S: string };
+    Nota?: { S: string };
+  };
+  PKGSI?: string;
+  SKGSI?: string;
+}
+
+export class FormattedAcademicoRecord {
+  @ApiProperty()
+  pk: string;
+  @ApiProperty()
+  sk: string;
+  @ApiProperty()
+  data: {
+    Curso?: { S: string };
+    Nota?: { S: string };
+  };
+  @ApiProperty()
+  pkgsi?: string;
+  @ApiProperty()
+  skgsi?: string;
+}

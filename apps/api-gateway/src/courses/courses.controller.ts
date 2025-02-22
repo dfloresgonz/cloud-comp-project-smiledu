@@ -17,6 +17,7 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { Course } from 'apps/utils/types';
+import { FormattedAcademicoRecord } from '../../../utils/types';
 
 @ApiTags('Courses api')
 @Controller('v1/courses')
@@ -66,6 +67,22 @@ export class CoursesController {
   async deleteCourse(@Param('id') id: number): Promise<boolean> {
     return await lastValueFrom(
       this.coursesClient.send('pe.softhy.smiledu.courses.delete', id),
+    );
+  }
+
+  @ApiOperation({ summary: 'Get notas by student ID' })
+  @ApiParam({ name: 'id', type: String })
+  @ApiResponse({
+    status: 200,
+    description: 'List notas',
+    type: FormattedAcademicoRecord,
+  })
+  @Get('/notas/student/:id')
+  async getByNotasStudentId(
+    @Param('id') id: number,
+  ): Promise<FormattedAcademicoRecord> {
+    return await lastValueFrom(
+      this.coursesClient.send('pe.softhy.smiledu.notas.getByStudentId', id),
     );
   }
 }

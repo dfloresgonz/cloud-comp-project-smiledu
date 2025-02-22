@@ -1,11 +1,15 @@
 import { Controller } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { Course } from 'apps/utils/types';
+import { Course, FormattedAcademicoRecord } from 'apps/utils/types';
+import { NotasService } from './notas/notas.service';
 
 @Controller()
 export class CoursesController {
-  constructor(private readonly coursesService: CoursesService) {}
+  constructor(
+    private readonly coursesService: CoursesService,
+    private readonly notasService: NotasService,
+  ) {}
 
   @MessagePattern('pe.softhy.smiledu.courses.get')
   async listCourses(): Promise<Course[]> {
@@ -25,5 +29,12 @@ export class CoursesController {
   @MessagePattern('pe.softhy.smiledu.courses.delete')
   async deleteCourse(@Payload() id: number): Promise<boolean> {
     return this.coursesService.deleteCourse(id);
+  }
+
+  @MessagePattern('pe.softhy.smiledu.notas.getByStudentId')
+  async getByNotasStudentId(
+    @Payload() id: string,
+  ): Promise<FormattedAcademicoRecord[]> {
+    return this.notasService.getStudentGrades(id);
   }
 }

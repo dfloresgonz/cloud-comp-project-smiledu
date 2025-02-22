@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { CoursesController } from './courses.controller';
 import { CoursesService } from './courses.service';
 import { ConfigModule } from '@nestjs/config';
+import { NotasService } from './notas/notas.service';
 import * as Joi from 'joi';
 
 @Module({
@@ -18,6 +19,6 @@ import * as Joi from 'joi';
     }),
   ],
   controllers: [CoursesController],
-  providers: [CoursesService],
+  providers: [CoursesService, NotasService],
 })
 export class CoursesModule {}
