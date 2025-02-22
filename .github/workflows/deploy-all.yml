@@ -49,7 +49,7 @@ jobs:
 
       - name: Ensure target directory exists on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} 'sudo mkdir -p /home/ec2-user/cloud-project && sudo chmod 755 /home/ec2-user/cloud-project'
+          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} 'mkdir -p /home/ec2-user/cloud-project && chmod 755 /home/ec2-user/cloud-project'
 
       - name: Clean target directory on EC2
         run: |
