@@ -66,5 +66,5 @@ jobs:
             ls -l app.tar.gz
             tar -xzf app.tar.gz
             docker-compose down
-            docker-compose up -d --build
+            docker-compose up -d --build -V
           EOF
