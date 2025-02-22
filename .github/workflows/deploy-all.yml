@@ -24,10 +24,10 @@ jobs:
         run: |
           touch .env
           echo API_PORT=${{env.API_PORT}} >> .env
-          echo HOST_BD=${{env.HOST_BD}} >> .env
-          echo USER_BD=${{env.USER_BD}} >> .env
+          echo HOST_BD=${{vars.HOST_BD}} >> .env
+          echo USER_BD=${{vars.USER_BD}} >> .env
           echo BD_PASS=${{secrets.BD_PASS}} >> .env
-          echo BD_PORT=${{env.BD_PORT}} >> .env
+          echo BD_PORT=${{vars.BD_PORT}} >> .env
           echo STUDENTS_MS_PORT=${{env.STUDENTS_MS_PORT}} >> .env
           echo STUDENTS_SERVICE_NAME=${{env.STUDENTS_SERVICE_NAME}} >> .env
           echo COURSES_MS_PORT=${{env.COURSES_MS_PORT}} >> .env
